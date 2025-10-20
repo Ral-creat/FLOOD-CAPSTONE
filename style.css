@@ -1,15 +1,50 @@
-/* Change main background */
+/* 🌸 MAIN BACKGROUND */
 .main {
-    background-color: #f4f7fa;
+    background: linear-gradient(180deg, #ffe6f0 0%, #fff5fa 100%);
+    color: #333;
+    font-family: "Poppins", sans-serif;
 }
 
-/* Style for sidebar (navigation) */
+/* 💖 SIDEBAR / NAVIGATION BAR */
 [data-testid="stSidebar"] {
-    background-color: #1e293b;
+    background: linear-gradient(180deg, #ffb6c1 0%, #ff9ebb 100%);
     color: white;
 }
 
-/* Optional text color styling */
-h1, h2, h3 {
-    color: #0077ff;
+/* 🌺 SIDEBAR TITLE + TEXT */
+[data-testid="stSidebar"] h1,
+[data-testid="stSidebar"] h2,
+[data-testid="stSidebar"] h3,
+[data-testid="stSidebar"] p {
+    color: white !important;
 }
+
+/* 🌷 HEADINGS */
+h1, h2, h3 {
+    color: #ff4d88 !important;
+    text-align: center;
+}
+
+/* 🦩 BUTTONS */
+div.stButton > button {
+    background-color: #ff80ab;
+    color: white;
+    border-radius: 12px;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+div.stButton > button:hover {
+    background-color: #ff4d88;
+    transform: scale(1.03);
+}
+
+/* 💅 INPUT BOXES */
+input, textarea {
+    border-radius: 10px !important;
+    border: 1px solid #ff99bb !important;
+}
+
+/* 🧁 FOOTER HIDE (optional, keeps it clean) */
+footer {visibility: hidden;}
+header {visibility: hidden;}
