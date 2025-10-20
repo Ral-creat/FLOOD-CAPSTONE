@@ -333,13 +333,15 @@ with tabs[1]:
                 st.markdown("**Explanation:** This histogram shows distribution of `Water Level` after cleaning non-numeric characters and imputing missing values with the median. The boxplot margin highlights potential outliers. Use this to detect skew and extreme events.")
 
     #Fix indentation error in app.py
-    if uploaded_file is not None:
+   if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
 
     if 'Month' in df.columns:
-        st.write("Month column found.")
+        st.write("✅ 'Month' column found.")
     else:
-        st.warning("Month column missing.")
+        st.warning("⚠️ 'Month' column not found in your data.")
+else:
+    st.info("Please upload a data file to continue.")
 
     # --- SAFE month name conversion ---
     def get_month_name(val):
