@@ -338,13 +338,26 @@ with tabs[1]:
         st.subheader("Summary statistics (numerical):")
         st.write(df.select_dtypes(include=[np.number]).describe())
 
-        # Water Level distribution (Plotly)
-if 'Water Level' in df.columns:
+# --- Water Level distribution (Plotly) ---
+if df is not None and 'Water Level' in df.columns:
     st.subheader("Water Level distribution")
-    fig = px.histogram(df, x='Water Level', nbins=30, marginal="box", title="Distribution of Cleaned Water Level")
+    fig = px.histogram(
+        df,
+        x='Water Level',
+        nbins=30,
+        marginal="box",
+        title="Distribution of Cleaned Water Level"
+    )
     st.plotly_chart(fig, use_container_width=True)
-if show_explanations:
-    st.markdown("**Explanation:** This histogram shows distribution of `Water Level` after cleaning non-numeric characters and imputing missing values with the median. The boxplot margin highlights potential outliers. Use this to detect skew and extreme events.")
+
+    if show_explanations:
+        st.markdown("""
+        **Explanation:**  
+        This histogram shows distribution of `Water Level` after cleaning non-numeric characters and imputing missing values with the median.  
+        The boxplot margin highlights potential outliers. Use this to detect skew and extreme events.
+        """)
+else:
+    st.warning("⚠️ Please upload a dataset containing a 'Water Level' column.")
 
 # --- Fix indentation and logic ---
 if uploaded_file is not None:
