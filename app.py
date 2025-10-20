@@ -295,21 +295,31 @@ with tabs[1]:
             if show_explanations:
                 st.markdown("**Explanation:** This histogram shows distribution of `Water Level` after cleaning non-numeric characters and imputing missing values with the median. The boxplot margin highlights potential outliers. Use this to detect skew and extreme events.")
 
-        # Monthly flood probability
+        # Monthly flood probability (TABLE FORMAT)
         if 'Month' in df.columns:
             # create flood_occurred column if not exists
             if 'flood_occurred' not in df.columns:
                 df['flood_occurred'] = (df['Water Level'].fillna(0) > 0).astype(int)
-            st.subheader("Monthly flood probability")
+            
+            st.subheader("Monthly Flood Probability (Table View)")
             m_stats = df.groupby('Month')['flood_occurred'].agg(['sum','count']).reset_index()
-            m_stats['probability'] = m_stats['sum']/m_stats['count']
+            m_stats['probability'] = (m_stats['sum'] / m_stats['count']).round(3)
             m_stats = m_stats.sort_values('probability', ascending=False)
-            fig = px.bar(m_stats, x='Month', y='probability', title="Flood Probability by Month", text='probability')
-            st.plotly_chart(fig, use_container_width=True)
-            if show_explanations:
-                st.markdown("**Explanation:** Probability = (# rows with Water Level>0) / (rows per month). Higher bars mean that month historically had more flood occurrences in your dataset.")
+            
+            # show the table
+            st.dataframe(m_stats)
 
-        # Municipal flood probabilities
+            if show_explanations:
+                st.markdown("""
+                **Explanation:**  
+                This table shows the probability of floods per month.  
+                - **sum** → Number of times flooding occurred  
+                - **count** → Total records in that month  
+                - **probability** → sum ÷ count (chance of flooding per month)  
+                Use this to identify which months are historically more flood-prone.
+                """)
+
+        # Municipal flood probabilities (still bar chart)
         if 'Municipality' in df.columns:
             st.subheader("Flood probability by Municipality")
             mun = df.groupby('Municipality')['flood_occurred'].agg(['sum','count']).reset_index()
