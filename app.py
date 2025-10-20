@@ -19,6 +19,7 @@ from statsmodels.tsa.stattools import adfuller
 from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
 import matplotlib.pyplot as plt
 import warnings
+import calendar
 warnings.filterwarnings("ignore")
 # --- Add this block for design customization ---
 
@@ -331,10 +332,6 @@ with tabs[1]:
             if show_explanations:
                 st.markdown("**Explanation:** This histogram shows distribution of `Water Level` after cleaning non-numeric characters and imputing missing values with the median. The boxplot margin highlights potential outliers. Use this to detect skew and extreme events.")
 
-       import calendar
-import plotly.express as px
-import streamlit as st
-import pandas as pd
 
 if 'Month' in df.columns:
     # create flood_occurred column if not exists
