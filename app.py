@@ -20,6 +20,13 @@ from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
 import matplotlib.pyplot as plt
 import warnings
 warnings.filterwarnings("ignore")
+# ================== LOAD LOCAL CSS ==================
+def local_css(file_name):
+    with open(file_name) as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+local_css("style.css")
+# ====================================================
 
 st.set_page_config(layout="wide", page_title="Flood Pattern Analysis Dashboard")
 
