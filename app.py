@@ -332,8 +332,8 @@ with tabs[1]:
             if show_explanations:
                 st.markdown("**Explanation:** This histogram shows distribution of `Water Level` after cleaning non-numeric characters and imputing missing values with the median. The boxplot margin highlights potential outliers. Use this to detect skew and extreme events.")
 
-
-     if uploaded_file is not None:
+    #Fix indentation error in app.py
+    if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
 
     if 'Month' in df.columns:
