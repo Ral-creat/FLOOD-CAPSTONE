@@ -442,41 +442,67 @@ with tabs[2]:
 # ------------------------------
 # Flood Prediction (RandomForest) Tab
 # ------------------------------
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report, accuracy_score
+import pandas as pd
+
 with tabs[3]:
     st.header("Flood occurrence prediction — RandomForest")
+
     if 'df' not in locals():
         st.warning("Do data cleaning first.")
     else:
-        # Prepare features: water level OR numeric + month dummies (we'll train both simple and refined)
+        # Prepare features: water level OR numeric + month dummies
         st.markdown("We train a RandomForest to predict `flood_occurred` (binary).")
 
-        # create target if not exists
-        df['flood_occurred'] = (df['Water Level'].fillna(0) > 0).astype(int)
+        # Create target variable
+        df['flood_occurred'] = (df['Water Level'] > 0).astype(int)
 
-        # basic feature set
+        # Feature set
         month_dummies = pd.get_dummies(df['Month'].astype(str).fillna('Unknown'), prefix='Month')
-        X_basic = pd.concat([df[['Water Level','No. of Families affected','Damage Infrastructure','Damage Agriculture']].fillna(0), month_dummies], axis=1)
+        X_basic = pd.concat([
+            df[['Water Level', 'No. of Families affected', 'Damage Infrastructure', 'Damage Agriculture']].fillna(0),
+            month_dummies
+        ], axis=1)
         y = df['flood_occurred']
 
-        # train/test split
+        # Train/test split
         Xtr, Xte, ytr, yte = train_test_split(X_basic, y, test_size=0.3, random_state=42)
 
+        # Model training
         model = RandomForestClassifier(random_state=42)
         model.fit(Xtr, ytr)
         ypred = model.predict(Xte)
         acc = accuracy_score(yte, ypred)
 
-        st.subheader("Basic RandomForest results")
-        st.write(f"Accuracy (test): {acc:.4f}")
+        # Display header
+        st.subheader("📊 Basic RandomForest Results")
 
-        # show classification report
-        st.text("Classification report:")
-        st.text(classification_report(yte, ypred))
+        # Accuracy table
+        acc_table = pd.DataFrame({
+            "Metric": ["Accuracy (test)"],
+            "Value": [f"{acc:.4f}"]
+        })
+        st.table(acc_table)
 
+        # Classification report in tabular format
+        report = classification_report(yte, ypred, output_dict=True)
+        report_df = pd.DataFrame(report).transpose().round(3)
+
+        st.markdown("### 📈 Classification Report")
+        st.table(report_df)
+
+        # Optional explanation
         if show_explanations:
-            st.markdown("**Explanation:** RandomForest uses many decision trees and aggregates their votes. High accuracy may indicate a strong signal in the features, but always check class balance and overfitting. Use the classification report to inspect precision/recall per class.")
+            st.markdown("""
+            **🧠 Explanation:**  
+            RandomForest uses many decision trees and aggregates their votes.  
+            High accuracy may indicate a strong signal in the features, but always check class balance and overfitting.  
+            Use the classification report to inspect precision and recall per class.
+            """)
 
-        # feature importances
+ # feature importances
         fi = pd.Series(model.feature_importances_, index=X_basic.columns).sort_values(ascending=False).head(10)
         st.subheader("Top feature importances")
         st.bar_chart(fi)
