@@ -33,6 +33,20 @@ st.set_page_config(
 
 # --- Custom title container ---
 st.markdown('<div class="main-title">🌊 DATA MINING FLOOD PATTERN 🌊</div>', unsafe_allow_html=True)
+# --- Step 1: File upload ---
+uploaded_file = st.file_uploader("Upload your dataset", type=["csv", "xlsx"])
+
+# --- Step 2: Load dataframe safely ---
+df = None
+if uploaded_file is not None:
+    try:
+        if uploaded_file.name.endswith(".csv"):
+            df = pd.read_csv(uploaded_file)
+        else:
+            df = pd.read_excel(uploaded_file)
+        st.success("✅ File uploaded successfully.")
+    except Exception as e:
+        st.error(f"❌ Could not read file: {e}")
 
 
 st.set_page_config(layout="wide", page_title="🌊 Flood Analysis Dashboard 🌊")
