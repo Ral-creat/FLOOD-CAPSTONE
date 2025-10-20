@@ -655,7 +655,7 @@ with tabs[5]:
                 if show_explanations:
                     st.markdown("**Explanation:** After first differencing we remove trends; re-check ADF on differenced series before modelling.")
 
-            # Show ACF/PACF plots (matplotlib drawn and then converted)
+            # Show ACF/PACF plots
             st.subheader("ACF & PACF (help pick p/q values)")
             fig_acf = plt.figure(figsize=(10,4))
             try:
@@ -672,18 +672,37 @@ with tabs[5]:
             if show_explanations:
                 st.markdown("**Explanation:** PACF suggests AR order (p), ACF suggests MA order (q). Seasonal spikes indicate seasonal order (P,Q,s).")
 
-            # Fit a sample SARIMA (p,d,q) x (P,D,Q,s) with conservative values
+            # ------------------------------
+            # Fit a sample SARIMA (table format output)
+            # ------------------------------
             st.subheader("Fit example SARIMA model")
             with st.spinner("Fitting SARIMA (may take a moment)..."):
-                # default params (these mirror the example): (1,1,1) x (1,0,1,7)
                 try:
                     order = (1, d, 1)
                     seasonal_order = (1, 0, 1, 7)
-                    model_sarima = SARIMAX(ts_filled, order=order, seasonal_order=seasonal_order, enforce_stationarity=False, enforce_invertibility=False)
+                    model_sarima = SARIMAX(
+                        ts_filled,
+                        order=order,
+                        seasonal_order=seasonal_order,
+                        enforce_stationarity=False,
+                        enforce_invertibility=False
+                    )
                     results = model_sarima.fit(disp=False)
-                    st.text(results.summary().as_text())
+
+                    # Convert summary to table
+                    summary_table = results.summary().tables[1]
+                    import io
+                    from pandas import read_csv
+                    summary_df = read_csv(io.StringIO(summary_table.as_csv()))
+                    st.dataframe(summary_df, use_container_width=True)
+
                     if show_explanations:
-                        st.markdown("**Explanation:** SARIMA models capture non-seasonal (p,d,q) and seasonal (P,D,Q,s) dynamics. Results include coefficients, AIC/BIC to compare alternatives.")
+                        st.markdown("""
+                        **Explanation:**  
+                        SARIMA models capture both seasonal and non-seasonal components.  
+                        This table summarizes coefficient estimates, standard errors, z-values, and p-values.  
+                        Use AIC/BIC for model comparison.
+                        """)
                 except Exception as e:
                     st.error(f"SARIMA fit failed: {e}")
                     results = None
@@ -695,7 +714,8 @@ with tabs[5]:
                     pred = results.get_forecast(steps=steps)
                     pred_mean = pred.predicted_mean
                     pred_ci = pred.conf_int()
-                    # combine and plot
+
+                    # Plot
                     fig = go.Figure()
                     fig.add_trace(go.Scatter(x=ts_filled.index, y=ts_filled, name='Observed'))
                     fig.add_trace(go.Scatter(x=pred_mean.index, y=pred_mean, name='Forecast'))
@@ -703,12 +723,18 @@ with tabs[5]:
                     fig.add_trace(go.Scatter(x=pred_ci.index, y=pred_ci.iloc[:,1], fill='tonexty', name='95% CI', mode='lines', line=dict(width=0)))
                     fig.update_layout(title="SARIMA Forecast", xaxis_title="Date", yaxis_title="Water Level")
                     st.plotly_chart(fig, use_container_width=True)
+
                     if show_explanations:
-                        st.markdown("**Explanation:** Forecast shows model predicted mean and 95% confidence intervals. Use this for short-term planning; re-evaluate model and parameters for longer horizons.")
+                        st.markdown("""
+                        **Explanation:**  
+                        The forecast shows predicted mean water levels with 95% confidence intervals.  
+                        Ideal for short-term flood preparedness planning.
+                        """)
                 else:
                     st.error("No SARIMA results available to forecast.")
             except Exception as e:
                 st.error(f"Forecast failed: {e}")
+
 
 # ------------------------------
 # Tutorial Tab
