@@ -1,0 +1,15 @@
+/* Change main background */
+.main {
+    background-color: #f4f7fa;
+}
+
+/* Style for sidebar (navigation) */
+[data-testid="stSidebar"] {
+    background-color: #1e293b;
+    color: white;
+}
+
+/* Optional text color styling */
+h1, h2, h3 {
+    color: #0077ff;
+}
