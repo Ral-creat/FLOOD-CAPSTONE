@@ -1,4 +1,4 @@
-/* 🌸 MAIN BACKGROUND (soft light pink tone) */
+/* 🌸 MAIN BACKGROUND (soft light pink gradient) */
 .main, [data-testid="stAppViewContainer"] {
     background: linear-gradient(180deg, #fff0f6 0%, #ffeaf2 100%);
     color: #222;
@@ -10,7 +10,7 @@
     background: linear-gradient(180deg, #ffc1d9 0%, #ffb6d9 100%);
     color: #1a1a1a;
     box-shadow: 3px 0 10px rgba(255, 182, 193, 0.35);
-    border-right: 2px solid #ffb6c1;
+    border-right: 2px solid #ffb6c1; /* only sidebar has border */
 }
 
 /* 🌺 SIDEBAR TITLES & TEXT */
@@ -52,15 +52,15 @@ div.stButton > button:hover {
 /* 🌷 INPUT BOXES & SELECTS */
 input, textarea, select {
     border-radius: 10px !important;
-    border: 1px solid #ffa6c9 !important;
     background-color: #fff5f9 !important;
     color: #222 !important;
+    border: none !important;
     transition: all 0.2s ease;
 }
 
 input:focus, textarea:focus, select:focus {
-    border-color: #ff66a3 !important;
-    box-shadow: 0 0 8px rgba(255, 102, 163, 0.3);
+    outline: 2px solid #ff9ecb !important;
+    box-shadow: 0 0 8px rgba(255, 153, 204, 0.3);
 }
 
 /* 🩰 DATAFRAMES / TABLES */
@@ -72,19 +72,27 @@ input:focus, textarea:focus, select:focus {
     padding: 10px;
 }
 
-/* Make table text readable */
+/* Clean readable table style (no border lines) */
 table, th, td {
     color: #111 !important;
     background-color: #fff !important;
-    border-color: #ffd6e8 !important;
+    border: none !important;
+}
+
+/* Zebra effect for readability */
+tbody tr:nth-child(odd) {
+    background-color: #fff0f6 !important;
+}
+tbody tr:nth-child(even) {
+    background-color: #ffffff !important;
 }
 
 /* 💫 EXPANDERS */
 [data-testid="stExpander"] {
     background-color: #fff0f6 !important;
     border-radius: 10px !important;
-    border: 1px solid #ffd6e8 !important;
     color: #111 !important;
+    border: none !important;
 }
 
 /* 🌼 TABS / NAVIGATION BUTTONS */
@@ -95,6 +103,7 @@ table, th, td {
     margin-right: 5px;
     font-weight: 500;
     transition: all 0.3s ease;
+    border: none !important;
 }
 
 [data-baseweb="tab-list"] button[aria-selected="true"] {
@@ -109,11 +118,12 @@ table, th, td {
     color: #fff !important;
 }
 
-/* 🪞 CODE BLOCKS & TEXT OUTPUTS */
+/* 🪞 TEXT OUTPUTS */
 [data-testid="stMarkdownContainer"], code, pre {
     color: #111 !important;
     background: #fffafa !important;
     border-radius: 8px;
+    border: none !important;
 }
 
 /* 🌈 FOOTER + HEADER (optional hide) */
