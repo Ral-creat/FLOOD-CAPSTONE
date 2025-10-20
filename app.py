@@ -333,7 +333,12 @@ with tabs[1]:
                 st.markdown("**Explanation:** This histogram shows distribution of `Water Level` after cleaning non-numeric characters and imputing missing values with the median. The boxplot margin highlights potential outliers. Use this to detect skew and extreme events.")
 
 
-if 'Month' in df.columns:
+ if 'Month' in df.columns:
+        st.write("✅ 'Month' column found.")
+    else:
+        st.warning("⚠️ 'Month' column not found in your data.")
+else:
+    st.info("Please upload a data file to continue.")
     # create flood_occurred column if not exists
     if 'flood_occurred' not in df.columns:
         df['flood_occurred'] = (df['Water Level'].fillna(0) > 0).astype(int)
