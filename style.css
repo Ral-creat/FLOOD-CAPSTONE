@@ -1,103 +1,96 @@
-/* 🌸 Main background gradient */
+/* 🌸 General page background */
 [data-testid="stAppViewContainer"] {
     background: linear-gradient(135deg, #ffe6ef 0%, #fff5fa 100%);
-    color: #2b0a23 !important;
 }
 
-/* 🌸 Sidebar styling */
-[data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #fcbad3 0%, #ffdfec 100%);
-    color: #3a0a2e !important;
-}
-[data-testid="stSidebar"] h1, 
-[data-testid="stSidebar"] h2, 
-[data-testid="stSidebar"] h3, 
-[data-testid="stSidebar"] p {
-    color: #3b0a2e !important;
-}
-
-/* 🌸 Page title */
-h1, h2, h3, h4, h5, h6 {
-    color: #b83280 !important;
+/* 🌷 Titles and subheaders */
+h1, h2, h3, h4 {
+    color: #b83280;
     font-family: 'Poppins', sans-serif;
-    font-weight: 600;
 }
 
-/* 🌸 Tabs / Navigation buttons */
-button[data-baseweb="tab"] {
-    background-color: #f9b9d0 !important;
-    color: #4a0d2e !important;
-    border-radius: 10px !important;
-    border: none !important;
-    margin-right: 6px !important;
-    transition: 0.3s ease;
-    font-weight: 500;
-}
-button[data-baseweb="tab"]:hover {
-    background-color: #f498ba !important;
-}
-button[data-baseweb="tab"][aria-selected="true"] {
-    background-color: #ec4899 !important;
-    color: white !important;
-}
-
-/* 🌸 Main content container */
-.block-container {
-    background-color: #ffffffeb;
+/* 💕 Card-like hover container for charts */
+.chart-container {
+    transition: all 0.3s ease;
     border-radius: 15px;
-    padding: 25px;
-    margin: 15px;
+    background-color: white;
+    padding: 15px;
     box-shadow: 0px 4px 10px rgba(184, 50, 128, 0.1);
+    margin-bottom: 20px;
+}
+.chart-container:hover {
+    transform: scale(1.03);
+    box-shadow: 0px 6px 15px rgba(184, 50, 128, 0.2);
 }
 
-/* 🌸 File uploader */
+/* 💗 Subheader separator */
+hr {
+    border: 1px solid #f9b4d1;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+/* 💌 Upload box */
 [data-testid="stFileUploader"] {
     border: 2px dashed #ec4899;
     border-radius: 10px;
-    background-color: #fff0f6;
+    background-color: #fff0f7;
 }
 
-/* 🌸 Buttons */
-button[kind="primary"] {
-    background-color: #f472b6 !important;
-    color: white !important;
-    border-radius: 8px !important;
-    border: none !important;
-    transition: 0.3s ease;
-}
-button[kind="primary"]:hover {
+/* 💞 Buttons hover effect */
+button:hover {
     background-color: #db2777 !important;
+    color: white !important;
 }
 
-/* 🌸 Tables and dataframes */
-[data-testid="stTable"], .stDataFrame {
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0px 2px 8px rgba(184, 50, 128, 0.1);
+/* 💖 Chart titles */
+.chart-title {
+    font-weight: 600;
+    color: #b83280;
+    margin-bottom: 8px;
 }
 
-/* 🌸 Horizontal line */
-hr {
-    border: 1px solid #fbb6ce;
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
-/* 🌸 Regular text color fix */
-p, span, div, label {
-    color: #3a0a2e !important;
-}
-
-/* 🌸 Chart and card containers */
-.chart-container, .data-section {
-    background-color: #ffffffd9;
+/* 🌺 Flood barangay section hover */
+.brgy-section {
+    transition: background 0.3s ease, transform 0.3s ease;
+    background: #fff0f7;
     border-radius: 12px;
-    padding: 15px;
-    margin-bottom: 20px;
-    box-shadow: 0px 4px 10px rgba(184, 50, 128, 0.1);
-    transition: all 0.3s ease;
+    padding: 10px;
+    margin-bottom: 15px;
 }
-.chart-container:hover, .data-section:hover {
-    transform: scale(1.02);
-    box-shadow: 0px 6px 15px rgba(184, 50, 128, 0.2);
+.brgy-section:hover {
+    background: #f9b4d1;
+    transform: scale(1.01);
+}
+
+/* 🌸 Sidebar & navigation styling */
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #ffb6d9 0%, #ffdee9 100%);
+    color: #4a154b;
+}
+
+[data-testid="stSidebar"] h1,
+[data-testid="stSidebar"] h2,
+[data-testid="stSidebar"] h3,
+[data-testid="stSidebar"] h4 {
+    color: #9d174d;
+}
+
+/* 💐 Tabs / Navigation buttons */
+[data-baseweb="tab-list"] button {
+    background-color: #f9a8d4 !important;
+    color: white !important;
+    border-radius: 10px !important;
+    margin-right: 5px;
+}
+
+[data-baseweb="tab-list"] button[aria-selected="true"] {
+    background-color: #ec4899 !important;
+    color: white !important;
+    font-weight: bold !important;
+}
+
+[data-baseweb="tab-list"] button:hover {
+    background-color: #db2777 !important;
+    color: white !important;
 }
