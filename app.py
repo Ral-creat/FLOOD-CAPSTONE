@@ -327,13 +327,14 @@ with tabs[1]:
         # Water Level distribution (Plotly)
         if 'Water Level' in df.columns:
             st.subheader("Water Level distribution")
-            fig = px.histogram(df, x='Water Level', nbins=30, marginal="box", title="Distribution of Cleaned Water Level")
-            st.plotly_chart(fig, use_container_width=True)
-            if show_explanations:
-                st.markdown("**Explanation:** This histogram shows distribution of `Water Level` after cleaning non-numeric characters and imputing missing values with the median. The boxplot margin highlights potential outliers. Use this to detect skew and extreme events.")
+          fig = px.histogram(df, x='Water Level', nbins=30, marginal="box", title="Distribution of Cleaned Water Level")
+st.plotly_chart(fig, use_container_width=True)
 
-    #Fix indentation error in app.py
-   if uploaded_file is not None:
+if show_explanations:
+    st.markdown("**Explanation:** This histogram shows distribution of `Water Level` after cleaning non-numeric characters and imputing missing values with the median. The boxplot margin highlights potential outliers. Use this to detect skew and extreme events.")
+
+# --- Fix indentation and logic ---
+if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
 
     if 'Month' in df.columns:
@@ -343,61 +344,59 @@ with tabs[1]:
 else:
     st.info("Please upload a data file to continue.")
 
-    # --- SAFE month name conversion ---
-    def get_month_name(val):
-        """Return proper month name from number or string."""
-        if pd.isnull(val):
-            return None
-        try:
-            num = int(val)
-            if 1 <= num <= 12:
-                return calendar.month_name[num]
-        except:
-            pass
-        # if already text like "Jan" or "January"
-        val_str = str(val).strip().title()
-        months = {m: m for m in calendar.month_name[1:]}
-        months_abbr = {m: calendar.month_name[i] for i, m in enumerate(calendar.month_abbr) if m}
-        all_months = {**months, **months_abbr}
-        return all_months.get(val_str, None)
+# --- SAFE month name conversion ---
+def get_month_name(val):
+    """Return proper month name from number or string."""
+    if pd.isnull(val):
+        return None
+    try:
+        num = int(val)
+        if 1 <= num <= 12:
+            return calendar.month_name[num]
+    except:
+        pass
+    # if already text like "Jan" or "January"
+    val_str = str(val).strip().title()
+    months = {m: m for m in calendar.month_name[1:]}
+    months_abbr = {m: calendar.month_name[i] for i, m in enumerate(calendar.month_abbr) if m}
+    all_months = {**months, **months_abbr}
+    return all_months.get(val_str, None)
 
-    df['Month_Name'] = df['Month'].apply(get_month_name)
+df['Month_Name'] = df['Month'].apply(get_month_name)
 
-    # drop rows with invalid month values
-    valid_df = df.dropna(subset=['Month_Name'])
+# drop rows with invalid month values
+valid_df = df.dropna(subset=['Month_Name'])
 
-    if not valid_df.empty:
-        # group and calculate flood probability
-        m_stats = valid_df.groupby('Month_Name')['flood_occurred'].agg(['sum', 'count']).reset_index()
-        m_stats['probability'] = m_stats['sum'] / m_stats['count']
+if not valid_df.empty:
+    # group and calculate flood probability
+    m_stats = valid_df.groupby('Month_Name')['flood_occurred'].agg(['sum', 'count']).reset_index()
+    m_stats['probability'] = m_stats['sum'] / m_stats['count']
 
-        # sort by chronological order (Jan–Dec)
-        m_stats['Month_Number'] = m_stats['Month_Name'].apply(lambda x: list(calendar.month_name).index(x))
-        m_stats = m_stats.sort_values('Month_Number')
+    # sort by chronological order (Jan–Dec)
+    m_stats['Month_Number'] = m_stats['Month_Name'].apply(lambda x: list(calendar.month_name).index(x))
+    m_stats = m_stats.sort_values('Month_Number')
 
-        # plot
-        fig = px.bar(
-            m_stats,
-            x='Month_Name',
-            y='probability',
-            title="Flood Probability by Month",
-            text='probability'
-        )
-        fig.update_traces(texttemplate='%{text:.2f}', textposition='outside')
-        fig.update_layout(xaxis_title="Month", yaxis_title="Flood Probability")
-        st.plotly_chart(fig, use_container_width=True)
+    # plot
+    fig = px.bar(
+        m_stats,
+        x='Month_Name',
+        y='probability',
+        title="Flood Probability by Month",
+        text='probability'
+    )
+    fig.update_traces(texttemplate='%{text:.2f}', textposition='outside')
+    fig.update_layout(xaxis_title="Month", yaxis_title="Flood Probability")
+    st.plotly_chart(fig, use_container_width=True)
 
-        # explanation
-        if show_explanations:
-            st.markdown("""
-            **Explanation:**  
-            Probability = (# of rows with Water Level > 0) ÷ (total rows in that month).  
-            Higher bars mean that the month historically had more flood occurrences in your dataset.
-            """)
-    else:
-        st.warning("⚠️ No valid month values found in the 'Month' column.")
-
-
+    # explanation
+    if show_explanations:
+        st.markdown("""
+        **Explanation:**  
+        Probability = (# of rows with Water Level > 0) ÷ (total rows in that month).  
+        Higher bars mean that the month historically had more flood occurrences in your dataset.
+        """)
+else:
+    st.warning("⚠️ No valid month values found in the 'Month' column.")
 
         # Municipal flood probabilities
         if 'Municipality' in df.columns:
