@@ -533,42 +533,79 @@ with tabs[3]:
 # ------------------------------
 # Flood Severity Tab
 # ------------------------------
-with tabs[4]:
-    st.header("Flood severity classification")
-    if 'df' not in locals():
-        st.warning("Do data cleaning first.")
-    else:
-        # create severity target
-        df['Flood_Severity'] = df['Water Level'].apply(categorize_severity)
-        st.subheader("Severity distribution")
-        st.write(df['Flood_Severity'].value_counts())
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report, accuracy_score
+import pandas as pd
 
-        # features: numeric + dummies for month, municipality, barangay (if present)
-        base_feats = ['No. of Families affected','Damage Infrastructure','Damage Agriculture']
+with tabs[4]:
+    st.header("🌊 Flood Severity Classification")
+
+    if 'df' not in locals():
+        st.warning("⚠️ Please perform data cleaning first.")
+    else:
+        # ---------------- CREATE TARGET COLUMN ----------------
+        df['Flood_Severity'] = df['Water Level'].apply(categorize_severity)
+
+        # ---------------- SEVERITY DISTRIBUTION ----------------
+        st.subheader("📊 Severity Distribution")
+        sev_counts = df['Flood_Severity'].value_counts().reset_index()
+        sev_counts.columns = ['Severity Level', 'Count']
+        st.table(sev_counts)
+
+        # ---------------- FEATURE SETUP ----------------
+        base_feats = ['No. of Families affected', 'Damage Infrastructure', 'Damage Agriculture']
         month_d = pd.get_dummies(df['Month'].astype(str).fillna('Unknown'), prefix='Month')
         muni_d = pd.get_dummies(df['Municipality'].astype(str).fillna('Unknown'), prefix='Municipality') if 'Municipality' in df.columns else pd.DataFrame()
         brgy_d = pd.get_dummies(df['Barangay'].astype(str).fillna('Unknown'), prefix='Barangay') if 'Barangay' in df.columns else pd.DataFrame()
         Xsev = pd.concat([df[base_feats].fillna(0), month_d, muni_d, brgy_d], axis=1)
         ysev = df['Flood_Severity']
 
-        # check class imbalance
-        st.write("Class counts:")
-        st.write(ysev.value_counts())
+        # ---------------- CLASS BALANCE TABLE ----------------
+        st.subheader("⚖️ Class Counts")
+        class_counts = ysev.value_counts().reset_index()
+        class_counts.columns = ['Flood Severity', 'Occurrences']
+        st.table(class_counts)
 
-        # train
+        # ---------------- MODEL TRAINING ----------------
         try:
-            Xtr_s, Xte_s, ytr_s, yte_s = train_test_split(Xsev, ysev, test_size=0.3, random_state=42, stratify=ysev)
+            Xtr_s, Xte_s, ytr_s, yte_s = train_test_split(
+                Xsev, ysev, test_size=0.3, random_state=42, stratify=ysev
+            )
+
             model_sev = RandomForestClassifier(random_state=42)
             model_sev.fit(Xtr_s, ytr_s)
             ypred_s = model_sev.predict(Xte_s)
             acc_s = accuracy_score(yte_s, ypred_s)
-            st.subheader("Severity model results")
-            st.write(f"Accuracy: {acc_s:.4f}")
-            st.text(classification_report(yte_s, ypred_s))
+
+            # ---------------- RESULTS TABLES ----------------
+            st.subheader("✅ Severity Model Results")
+
+            # Accuracy table
+            acc_table = pd.DataFrame({
+                'Metric': ['Accuracy (test)'],
+                'Value': [f"{acc_s:.4f}"]
+            })
+            st.table(acc_table)
+
+            # Classification report (tabular)
+            report = classification_report(yte_s, ypred_s, output_dict=True, zero_division=0)
+            report_df = pd.DataFrame(report).transpose().round(3)
+
+            st.markdown("### 📈 Classification Report (Low / Medium / High)")
+            st.table(report_df)
+
+            # ---------------- EXPLANATION ----------------
             if show_explanations:
-                st.markdown("**Explanation:** Multi-class RandomForest predicting Low/Medium/High. Imbalanced datasets often produce poor recall for rare classes (High). Consider resampling or class-weighted models for real deployments.")
+                st.markdown("""
+                **🧠 Explanation:**  
+                This multi-class RandomForest predicts flood severity levels — **Low**, **Medium**, or **High**.  
+                Class imbalance (e.g., fewer 'High' floods) can reduce recall for rare classes.  
+                For production use, consider resampling (SMOTE) or class-weight adjustments.
+                """)
+
         except Exception as e:
-            st.error(f"Could not train severity model: {e}")
+            st.error(f"❌ Could not train severity model: {e}")
 
 # ------------------------------
 # Time Series (SARIMA)
