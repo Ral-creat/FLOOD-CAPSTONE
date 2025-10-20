@@ -1,41 +1,46 @@
 /* 🌸 General page background */
 [data-testid="stAppViewContainer"] {
     background: linear-gradient(135deg, #ffe6f0 0%, #fff5fa 100%);
+    color: #3b0a2e !important;
 }
 
 /* 🌸 Sidebar background */
 [data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #ffe4ef 0%, #ffd6eb 100%);
+    background: linear-gradient(180deg, #ffcce0 0%, #ffd6eb 100%);
+    color: #4a0d2e !important;
 }
 
 /* 🌸 Titles and subheaders */
-h1, h2, h3, h4 {
-    color: #b83280;
+h1, h2, h3, h4, h5, h6 {
+    color: #b83280 !important;
     font-family: 'Poppins', sans-serif;
 }
 
-/* 🌸 Chart / Card containers */
-.chart-container {
-    transition: all 0.3s ease;
+/* 🌸 Tabs and navigation */
+button[data-baseweb="tab"] {
+    background-color: #f9d8e7 !important;
+    color: #b83280 !important;
+    border-radius: 10px !important;
+    margin-right: 6px !important;
+}
+button[data-baseweb="tab"]:hover {
+    background-color: #f4b6d6 !important;
+}
+button[data-baseweb="tab"][aria-selected="true"] {
+    background-color: #ec4899 !important;
+    color: white !important;
+}
+
+/* 🌸 Main content boxes */
+.block-container {
+    background-color: #ffffffd9; /* semi-transparent white */
     border-radius: 15px;
-    background-color: white;
-    padding: 15px;
+    padding: 25px;
+    margin: 15px;
     box-shadow: 0px 4px 10px rgba(184, 50, 128, 0.1);
-    margin-bottom: 20px;
-}
-.chart-container:hover {
-    transform: scale(1.03);
-    box-shadow: 0px 6px 15px rgba(184, 50, 128, 0.3);
 }
 
-/* 🌸 Subheader separator */
-hr {
-    border: 1px solid #fbb6ce;
-    margin-top: 25px;
-    margin-bottom: 25px;
-}
-
-/* 🌸 Upload boxes */
+/* 🌸 File uploader box */
 [data-testid="stFileUploader"] {
     border: 2px dashed #ec4899;
     border-radius: 10px;
@@ -43,39 +48,47 @@ hr {
 }
 
 /* 🌸 Buttons */
-button {
+button[kind="primary"] {
     background-color: #f472b6 !important;
     color: white !important;
-    border: none;
-    border-radius: 8px;
+    border: none !important;
+    border-radius: 8px !important;
     transition: 0.3s ease;
 }
-button:hover {
+button[kind="primary"]:hover {
     background-color: #db2777 !important;
-    color: white !important;
 }
 
-/* 🌸 Chart titles */
-.chart-title {
-    font-weight: 600;
-    color: #be185d;
-    margin-bottom: 8px;
+/* 🌸 Code blocks and text */
+code, pre {
+    background-color: #fff !important;
+    color: #222 !important;
+    border-radius: 8px;
+    padding: 5px;
 }
 
-/* 🌸 Barangay sections */
-.brgy-section {
-    transition: background 0.3s ease, transform 0.3s ease;
-    background: #fff0f6;
+/* 🌸 Data section containers */
+.chart-container, .brgy-section {
+    background-color: #fff;
     border-radius: 12px;
-    padding: 10px;
-    margin-bottom: 15px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0px 2px 10px rgba(184, 50, 128, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.brgy-section:hover {
-    background: #fbcfe8;
-    transform: scale(1.01);
+.chart-container:hover, .brgy-section:hover {
+    transform: scale(1.02);
+    box-shadow: 0px 4px 15px rgba(184, 50, 128, 0.2);
 }
 
-/* 🌸 Remove dark theme interference */
-[data-testid="stHeader"] {
-    background: transparent !important;
+/* 🌸 Horizontal lines */
+hr {
+    border: 1px solid #fbb6ce;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* 🌸 Improve text contrast */
+p, span, li, div {
+    color: #3a0a2e !important;
 }
