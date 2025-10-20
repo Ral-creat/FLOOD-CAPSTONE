@@ -1,46 +1,56 @@
-/* 🌸 General page background */
+/* 🌸 Main background gradient */
 [data-testid="stAppViewContainer"] {
-    background: linear-gradient(135deg, #ffe6f0 0%, #fff5fa 100%);
+    background: linear-gradient(135deg, #ffe6ef 0%, #fff5fa 100%);
+    color: #2b0a23 !important;
+}
+
+/* 🌸 Sidebar styling */
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #fcbad3 0%, #ffdfec 100%);
+    color: #3a0a2e !important;
+}
+[data-testid="stSidebar"] h1, 
+[data-testid="stSidebar"] h2, 
+[data-testid="stSidebar"] h3, 
+[data-testid="stSidebar"] p {
     color: #3b0a2e !important;
 }
 
-/* 🌸 Sidebar background */
-[data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #ffcce0 0%, #ffd6eb 100%);
-    color: #4a0d2e !important;
-}
-
-/* 🌸 Titles and subheaders */
+/* 🌸 Page title */
 h1, h2, h3, h4, h5, h6 {
     color: #b83280 !important;
     font-family: 'Poppins', sans-serif;
+    font-weight: 600;
 }
 
-/* 🌸 Tabs and navigation */
+/* 🌸 Tabs / Navigation buttons */
 button[data-baseweb="tab"] {
-    background-color: #f9d8e7 !important;
-    color: #b83280 !important;
+    background-color: #f9b9d0 !important;
+    color: #4a0d2e !important;
     border-radius: 10px !important;
+    border: none !important;
     margin-right: 6px !important;
+    transition: 0.3s ease;
+    font-weight: 500;
 }
 button[data-baseweb="tab"]:hover {
-    background-color: #f4b6d6 !important;
+    background-color: #f498ba !important;
 }
 button[data-baseweb="tab"][aria-selected="true"] {
     background-color: #ec4899 !important;
     color: white !important;
 }
 
-/* 🌸 Main content boxes */
+/* 🌸 Main content container */
 .block-container {
-    background-color: #ffffffd9; /* semi-transparent white */
+    background-color: #ffffffeb;
     border-radius: 15px;
     padding: 25px;
     margin: 15px;
     box-shadow: 0px 4px 10px rgba(184, 50, 128, 0.1);
 }
 
-/* 🌸 File uploader box */
+/* 🌸 File uploader */
 [data-testid="stFileUploader"] {
     border: 2px dashed #ec4899;
     border-radius: 10px;
@@ -51,44 +61,43 @@ button[data-baseweb="tab"][aria-selected="true"] {
 button[kind="primary"] {
     background-color: #f472b6 !important;
     color: white !important;
-    border: none !important;
     border-radius: 8px !important;
+    border: none !important;
     transition: 0.3s ease;
 }
 button[kind="primary"]:hover {
     background-color: #db2777 !important;
 }
 
-/* 🌸 Code blocks and text */
-code, pre {
-    background-color: #fff !important;
-    color: #222 !important;
-    border-radius: 8px;
-    padding: 5px;
-}
-
-/* 🌸 Data section containers */
-.chart-container, .brgy-section {
+/* 🌸 Tables and dataframes */
+[data-testid="stTable"], .stDataFrame {
     background-color: #fff;
-    border-radius: 12px;
-    padding: 15px;
-    margin-bottom: 20px;
-    box-shadow: 0px 2px 10px rgba(184, 50, 128, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.chart-container:hover, .brgy-section:hover {
-    transform: scale(1.02);
-    box-shadow: 0px 4px 15px rgba(184, 50, 128, 0.2);
+    border-radius: 10px;
+    box-shadow: 0px 2px 8px rgba(184, 50, 128, 0.1);
 }
 
-/* 🌸 Horizontal lines */
+/* 🌸 Horizontal line */
 hr {
     border: 1px solid #fbb6ce;
     margin-top: 20px;
     margin-bottom: 20px;
 }
 
-/* 🌸 Improve text contrast */
-p, span, li, div {
+/* 🌸 Regular text color fix */
+p, span, div, label {
     color: #3a0a2e !important;
+}
+
+/* 🌸 Chart and card containers */
+.chart-container, .data-section {
+    background-color: #ffffffd9;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0px 4px 10px rgba(184, 50, 128, 0.1);
+    transition: all 0.3s ease;
+}
+.chart-container:hover, .data-section:hover {
+    transform: scale(1.02);
+    box-shadow: 0px 6px 15px rgba(184, 50, 128, 0.2);
 }
