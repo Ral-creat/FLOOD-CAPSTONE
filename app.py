@@ -271,7 +271,31 @@ with tabs[0]:
         st.write("Column names:")
         st.write(list(df_raw.columns))
 
-# Monthly flood probability
+# ------------------------------
+# Cleaning & EDA Tab
+# ------------------------------
+with tabs[1]:
+    st.header("Data Cleaning & Exploratory Data Analysis (EDA)")
+    if 'df_raw' not in locals():
+        st.warning("Upload a dataset first in the Data Upload tab.")
+    else:
+        df = load_and_basic_clean(df_raw)
+        st.subheader("After basic cleaning (head):")
+        st.dataframe(df.head(10))
+
+        # Basic stats
+        st.subheader("Summary statistics (numerical):")
+        st.write(df.select_dtypes(include=[np.number]).describe())
+
+        # Water Level distribution (Plotly)
+        if 'Water Level' in df.columns:
+            st.subheader("Water Level distribution")
+            fig = px.histogram(df, x='Water Level', nbins=30, marginal="box", title="Distribution of Cleaned Water Level")
+            st.plotly_chart(fig, use_container_width=True)
+            if show_explanations:
+                st.markdown("**Explanation:** This histogram shows distribution of `Water Level` after cleaning non-numeric characters and imputing missing values with the median. The boxplot margin highlights potential outliers. Use this to detect skew and extreme events.")
+
+        # Monthly flood probability
         if 'Month' in df.columns:
             # create flood_occurred column if not exists
             if 'flood_occurred' not in df.columns:
@@ -285,9 +309,7 @@ with tabs[0]:
             if show_explanations:
                 st.markdown("**Explanation:** Probability = (# rows with Water Level>0) / (rows per month). Higher bars mean that month historically had more flood occurrences in your dataset.")
 
-
-
-        # Municipal flood probabilities (still bar chart)
+        # Municipal flood probabilities
         if 'Municipality' in df.columns:
             st.subheader("Flood probability by Municipality")
             mun = df.groupby('Municipality')['flood_occurred'].agg(['sum','count']).reset_index()
