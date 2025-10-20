@@ -396,15 +396,25 @@ if not valid_df.empty:
         """)
 else:
     st.warning("⚠️ No valid month values found in the 'Month' column.")
-        if 'Municipality' in df.columns:
-            st.subheader("Flood probability by Municipality")
-            mun = df.groupby('Municipality')['flood_occurred'].agg(['sum','count']).reset_index()
-            mun['probability'] = mun['sum']/mun['count']
-            mun = mun.sort_values('probability', ascending=False)
-            fig = px.bar(mun, x='Municipality', y='probability', title="Flood Probability by Municipality")
-            st.plotly_chart(fig, use_container_width=True)
-            if show_explanations:
-                st.markdown("**Explanation:** This helps prioritize which municipalities to focus preparedness efforts on.")
+
+# ---- Municipality-level flood probability ----
+if 'Municipality' in df.columns:
+    st.subheader("Flood Probability by Municipality")
+    mun = df.groupby('Municipality')['flood_occurred'].agg(['sum', 'count']).reset_index()
+    mun['probability'] = mun['sum'] / mun['count']
+    mun = mun.sort_values('probability', ascending=False)
+
+    fig = px.bar(
+        mun,
+        x='Municipality',
+        y='probability',
+        title="Flood Probability by Municipality"
+    )
+    st.plotly_chart(fig, use_container_width=True)
+
+    if show_explanations:
+        st.markdown("**Explanation:** This helps prioritize which municipalities to focus preparedness efforts on.")
+
 
 # ------------------------------
 # Clustering Tab (KMeans)
