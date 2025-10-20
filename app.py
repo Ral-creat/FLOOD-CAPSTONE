@@ -396,8 +396,6 @@ if not valid_df.empty:
         """)
 else:
     st.warning("⚠️ No valid month values found in the 'Month' column.")
-
-        # Municipal flood probabilities
         if 'Municipality' in df.columns:
             st.subheader("Flood probability by Municipality")
             mun = df.groupby('Municipality')['flood_occurred'].agg(['sum','count']).reset_index()
