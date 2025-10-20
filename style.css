@@ -1,129 +1,65 @@
-/* 🌸 MAIN BACKGROUND (soft light pink gradient) */
-.main, [data-testid="stAppViewContainer"] {
-    background: linear-gradient(180deg, #fff0f6 0%, #ffeaf2 100%);
-    color: #222;
+/* 🌸 MAIN BACKGROUND (full pink gradient) */
+.main {
+    background: linear-gradient(180deg, #ffe6f0 0%, #ffd6e8 100%);
+    color: #333;
     font-family: "Poppins", sans-serif;
 }
 
 /* 💖 SIDEBAR / NAVIGATION BAR */
 [data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #ffc1d9 0%, #ffb6d9 100%);
-    color: #1a1a1a;
-    box-shadow: 3px 0 10px rgba(255, 182, 193, 0.35);
-    border-right: 2px solid #ffb6c1; /* only sidebar has border */
+    background: linear-gradient(180deg, #ff9ebb 0%, #ff80ab 100%);
+    color: white;
+    box-shadow: 4px 0 10px rgba(255, 105, 180, 0.3);
 }
 
 /* 🌺 SIDEBAR TITLES & TEXT */
 [data-testid="stSidebar"] h1,
 [data-testid="stSidebar"] h2,
 [data-testid="stSidebar"] h3,
-[data-testid="stSidebar"] p,
-[data-testid="stSidebar"] label,
-[data-testid="stSidebar"] span {
-    color: #1a1a1a !important;
-    font-weight: 500;
+[data-testid="stSidebar"] p {
+    color: white !important;
 }
 
 /* 💕 HEADINGS */
 h1, h2, h3 {
-    color: #d63384 !important;
+    color: #ff4d88 !important;
     text-align: center;
     font-weight: 600;
-    letter-spacing: 0.5px;
 }
 
 /* 🦩 BUTTONS */
 div.stButton > button {
-    background-color: #ff8bb0;
-    color: #1a1a1a !important;
+    background-color: #ff80ab;
+    color: white;
     border-radius: 12px;
     border: none;
     transition: all 0.3s ease;
     box-shadow: 0 4px 8px rgba(255, 105, 180, 0.3);
-    font-weight: 500;
 }
 
 div.stButton > button:hover {
-    background-color: #ff5c8a;
-    color: #fff !important;
+    background-color: #ff4d88;
     transform: scale(1.05);
 }
 
 /* 🌷 INPUT BOXES & SELECTS */
 input, textarea, select {
     border-radius: 10px !important;
-    background-color: #fff5f9 !important;
-    color: #222 !important;
-    border: none !important;
-    transition: all 0.2s ease;
-}
-
-input:focus, textarea:focus, select:focus {
-    outline: 2px solid #ff9ecb !important;
-    box-shadow: 0 0 8px rgba(255, 153, 204, 0.3);
+    border: 1px solid #ff99bb !important;
+    background-color: #fff0f6 !important;
 }
 
 /* 🩰 DATAFRAMES / TABLES */
 [data-testid="stDataFrame"] {
-    background-color: #ffffff !important;
-    color: #111 !important;
+    background-color: white !important;
     border-radius: 12px !important;
     box-shadow: 0 2px 10px rgba(255, 182, 193, 0.3);
-    padding: 10px;
-}
-
-/* Clean readable table style (no border lines) */
-table, th, td {
-    color: #111 !important;
-    background-color: #fff !important;
-    border: none !important;
-}
-
-/* Zebra effect for readability */
-tbody tr:nth-child(odd) {
-    background-color: #fff0f6 !important;
-}
-tbody tr:nth-child(even) {
-    background-color: #ffffff !important;
 }
 
 /* 💫 EXPANDERS */
 [data-testid="stExpander"] {
-    background-color: #fff0f6 !important;
+    background-color: #ffe6f0 !important;
     border-radius: 10px !important;
-    color: #111 !important;
-    border: none !important;
-}
-
-/* 🌼 TABS */
-[data-baseweb="tab-list"] button {
-    background-color: #ffb6c1 !important;
-    color: #fff !important;
-    font-weight: bold;
-    border-radius: 10px !important;
-    margin-right: 5px;
-    transition: all 0.3s ease;
-    border: none !important;
-}
-
-[data-baseweb="tab-list"] button[aria-selected="true"] {
-    background-color: #ff66a3 !important;
-    color: #fff !important;
-    font-weight: bold !important;
-    box-shadow: 0px 3px 8px rgba(255, 105, 180, 0.3);
-}
-
-[data-baseweb="tab-list"] button:hover {
-    background-color: #ff80b0 !important;
-    color: #fff !important;
-}
-
-/* 🪞 TEXT OUTPUTS */
-[data-testid="stMarkdownContainer"], code, pre {
-    color: #111 !important;
-    background: #fffafa !important;
-    border-radius: 8px;
-    border: none !important;
 }
 
 /* 🌈 FOOTER + HEADER (optional hide) */
