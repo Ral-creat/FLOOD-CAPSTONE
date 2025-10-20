@@ -1,18 +1,20 @@
-# ------------------ 🌸 CSS Styling (Pink Theme) ------------------
-st.markdown("""
-<style>
-/* General page background */
+/* 🌸 General page background */
 [data-testid="stAppViewContainer"] {
     background: linear-gradient(135deg, #ffe6f0 0%, #fff5fa 100%);
 }
 
-/* Titles and subheaders */
+/* 🌸 Sidebar background */
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #ffe4ef 0%, #ffd6eb 100%);
+}
+
+/* 🌸 Titles and subheaders */
 h1, h2, h3, h4 {
     color: #b83280;
     font-family: 'Poppins', sans-serif;
 }
 
-/* Card-like hover container for charts */
+/* 🌸 Chart / Card containers */
 .chart-container {
     transition: all 0.3s ease;
     border-radius: 15px;
@@ -26,21 +28,21 @@ h1, h2, h3, h4 {
     box-shadow: 0px 6px 15px rgba(184, 50, 128, 0.3);
 }
 
-/* Subheader separator */
+/* 🌸 Subheader separator */
 hr {
     border: 1px solid #fbb6ce;
     margin-top: 25px;
     margin-bottom: 25px;
 }
 
-/* Upload boxes */
+/* 🌸 Upload boxes */
 [data-testid="stFileUploader"] {
     border: 2px dashed #ec4899;
     border-radius: 10px;
     background-color: #fff0f6;
 }
 
-/* Buttons */
+/* 🌸 Buttons */
 button {
     background-color: #f472b6 !important;
     color: white !important;
@@ -53,14 +55,14 @@ button:hover {
     color: white !important;
 }
 
-/* Chart titles */
+/* 🌸 Chart titles */
 .chart-title {
     font-weight: 600;
     color: #be185d;
     margin-bottom: 8px;
 }
 
-/* Flood barangay section hover */
+/* 🌸 Barangay sections */
 .brgy-section {
     transition: background 0.3s ease, transform 0.3s ease;
     background: #fff0f6;
@@ -73,6 +75,7 @@ button:hover {
     transform: scale(1.01);
 }
 
-/* Sidebar background */
-[data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #ffe4ef
+/* 🌸 Remove dark theme interference */
+[data-testid="stHeader"] {
+    background: transparent !important;
+}
