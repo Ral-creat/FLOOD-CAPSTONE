@@ -7,7 +7,7 @@
 /* 🌸 NAVIGATION BAR BUTTONS (Data Upload, EDA, etc.) */
 [data-testid="stHorizontalBlock"] div button,
 .stTabs [role="tab"] {
-    border: 2px solid #ffffff !important;
+    border: 2px solid #000000 !important;
     background: linear-gradient(90deg, #ff80ab 0%, #ff5fa2 100%) !important;
     color: #000000 !important;
     border-radius: 10px !important;
