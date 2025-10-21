@@ -403,47 +403,55 @@ with tabs[1]:
                 - **Probability = Flood occurrences / Total records in that month**  
                 Months with higher bars indicate higher flood risk periods.  
                 """)
-        # ------------------------------
+               # ------------------------------
         # Most affected Barangay (Flood Probability)
         # ------------------------------
-        if 'Barangay' in df.columns:
-            st.subheader("Flood Probability by Barangay")
+        st.subheader("Flood Probability by Barangay")
 
-            # Compute flood probability per barangay
-            brgy_stats = df.groupby('Barangay')['flood_occurred'].agg(['sum', 'count']).reset_index()
-            brgy_stats['probability'] = (brgy_stats['sum'] / brgy_stats['count']).round(3)
+        # Check if 'Barangay' column exists
+        if 'Barangay' not in df.columns:
+            st.warning("⚠️ No 'Barangay' column found in your dataset. Please check the column name (e.g., 'Brgy' or 'Barangay Name').")
+            st.write("📋 Available columns:", list(df.columns))
+        else:
+            # Drop rows with missing barangay
+            df_brgy = df.dropna(subset=['Barangay'])
 
-            # Sort by highest flood probability
-            brgy_stats = brgy_stats.sort_values('probability', ascending=False)
+            if df_brgy.empty:
+                st.warning("⚠️ No valid data for 'Barangay' — maybe all values are empty?")
+                st.dataframe(df.head())  # show preview for checking
+            else:
+                # Compute flood probability per barangay
+                brgy_stats = df_brgy.groupby('Barangay')['flood_occurred'].agg(['sum', 'count']).reset_index()
+                brgy_stats['probability'] = (brgy_stats['sum'] / brgy_stats['count']).round(3)
+                brgy_stats = brgy_stats.sort_values('probability', ascending=False)
 
-            # Display bar chart
-            fig = px.bar(
-                brgy_stats,
-                x='Barangay',
-                y='probability',
-                title="Flood Probability by Barangay",
-                text='probability'
-            )
-            fig.update_traces(texttemplate='%{text:.2f}', textposition='outside')
-            fig.update_layout(xaxis_title="Barangay", yaxis_title="Flood Probability")
+                # Plot bar chart
+                fig = px.bar(
+                    brgy_stats,
+                    x='Barangay',
+                    y='probability',
+                    title="Flood Probability by Barangay",
+                    text='probability'
+                )
+                fig.update_traces(texttemplate='%{text:.2f}', textposition='outside')
+                fig.update_layout(xaxis_title="Barangay", yaxis_title="Flood Probability")
+                st.plotly_chart(fig, use_container_width=True)
 
-            st.plotly_chart(fig, use_container_width=True)
-
-            # Identify the most affected barangay
-            most_affected = brgy_stats.iloc[0]
-            st.markdown(f"""
-            ### 🌊 Most Affected Barangay
-            **Barangay:** {most_affected['Barangay']}  
-            **Flood Probability:** {most_affected['probability']:.2f}  
-            """)
-            
-            if show_explanations:
-                st.markdown("""
-                **Explanation:**  
-                This section ranks all barangays by how often flooding occurs.  
-                The barangay with the **highest probability** indicates the most flood-prone area,  
-                which can guide LGU and disaster management efforts.
+                # Display most affected barangay (top 1)
+                most_affected = brgy_stats.iloc[0]
+                st.markdown(f"""
+                ### 🌊 Most Affected Barangay
+                **Barangay:** {most_affected['Barangay']}  
+                **Flood Probability:** {most_affected['probability']:.2f}  
                 """)
+
+                if show_explanations:
+                    st.markdown("""
+                    **Explanation:**  
+                    This section ranks barangays by their flood occurrence rate.  
+                    The barangay with the **highest probability** is considered the most flood-prone,  
+                    useful for LGU flood mitigation planning.
+                    """)
 
         # ------------------------------
         # Municipal flood probabilities
