@@ -403,6 +403,16 @@ with tabs[1]:
                 - **Probability = Flood occurrences / Total records in that month**  
                 Months with higher bars indicate higher flood risk periods.  
                 """)
+                # --- 2. Most affected Barangays ---
+plt.figure(figsize=(10,5))
+df.groupby('Baranggay')['No. of Families affected'].sum().sort_values(ascending=False).head(10).plot(
+    kind='bar', color='salmon', edgecolor='black'
+)
+plt.title("Top 10 Most Affected Barangays (Families Affected)")
+plt.ylabel("Families Affected")
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+plt.tight_layout()
+plt.show()
         # ------------------------------
         # Municipal flood probabilities
         # ------------------------------
