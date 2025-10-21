@@ -403,6 +403,47 @@ with tabs[1]:
                 - **Probability = Flood occurrences / Total records in that month**  
                 Months with higher bars indicate higher flood risk periods.  
                 """)
+        # ------------------------------
+        # Most affected Barangay (Flood Probability)
+        # ------------------------------
+        if 'Barangay' in df.columns:
+            st.subheader("Flood Probability by Barangay")
+
+            # Compute flood probability per barangay
+            brgy_stats = df.groupby('Barangay')['flood_occurred'].agg(['sum', 'count']).reset_index()
+            brgy_stats['probability'] = (brgy_stats['sum'] / brgy_stats['count']).round(3)
+
+            # Sort by highest flood probability
+            brgy_stats = brgy_stats.sort_values('probability', ascending=False)
+
+            # Display bar chart
+            fig = px.bar(
+                brgy_stats,
+                x='Barangay',
+                y='probability',
+                title="Flood Probability by Barangay",
+                text='probability'
+            )
+            fig.update_traces(texttemplate='%{text:.2f}', textposition='outside')
+            fig.update_layout(xaxis_title="Barangay", yaxis_title="Flood Probability")
+
+            st.plotly_chart(fig, use_container_width=True)
+
+            # Identify the most affected barangay
+            most_affected = brgy_stats.iloc[0]
+            st.markdown(f"""
+            ### 🌊 Most Affected Barangay
+            **Barangay:** {most_affected['Barangay']}  
+            **Flood Probability:** {most_affected['probability']:.2f}  
+            """)
+            
+            if show_explanations:
+                st.markdown("""
+                **Explanation:**  
+                This section ranks all barangays by how often flooding occurs.  
+                The barangay with the **highest probability** indicates the most flood-prone area,  
+                which can guide LGU and disaster management efforts.
+                """)
 
         # ------------------------------
         # Municipal flood probabilities
