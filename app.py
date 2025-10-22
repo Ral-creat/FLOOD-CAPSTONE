@@ -403,16 +403,6 @@ with tabs[1]:
                 - **Probability = Flood occurrences / Total records in that month**  
                 Months with higher bars indicate higher flood risk periods.  
                 """)
-                # --- 2. Most affected Barangays ---
-plt.figure(figsize=(10,5))
-df.groupby('Baranggay')['No. of Families affected'].sum().sort_values(ascending=False).head(10).plot(
-    kind='bar', color='salmon', edgecolor='black'
-)
-plt.title("Top 10 Most Affected Barangays (Families Affected)")
-plt.ylabel("Families Affected")
-plt.grid(axis='y', linestyle='--', alpha=0.7)
-plt.tight_layout()
-plt.show()
         # ------------------------------
         # Municipal flood probabilities
         # ------------------------------
@@ -437,65 +427,7 @@ plt.show()
                 This helps identify which municipalities historically experience more flooding,
                 guiding local preparedness and response planning.
                 """)
-        # ------------------------------
-        # Barangay flood probabilities
-        # ------------------------------
-        if 'Barangay' in df.columns:
-            st.subheader("Flood Probability by Barangay")
-
-            # ✅ Ensure 'Water Level' and 'flood_occurred' exist
-            if 'Water Level' not in df.columns:
-                st.warning("⚠️ No 'Water Level' column found — required to determine flood occurrences.")
-            else:
-                # Create flood_occurred column if not exists
-                if 'flood_occurred' not in df.columns:
-                    df['flood_occurred'] = (pd.to_numeric(df['Water Level'], errors='coerce').fillna(0) > 0).astype(int)
-
-                # Drop missing barangays
-                df_brgy = df.dropna(subset=['Barangay'])
-                if df_brgy.empty:
-                    st.warning("⚠️ No valid barangay data found after cleaning.")
-                    st.dataframe(df.head())
-                else:
-                    # Compute flood probability per barangay
-                    brgy = df_brgy.groupby('Barangay')['flood_occurred'].agg(['sum', 'count']).reset_index()
-                    brgy['probability'] = (brgy['sum'] / brgy['count']).round(3)
-                    brgy = brgy.sort_values('probability', ascending=False)
-
-                    # ✅ Plot same-style bar chart
-                    fig = px.bar(
-                        brgy,
-                        x='Barangay',
-                        y='probability',
-                        title="Flood Probability by Barangay",
-                        text='probability'
-                    )
-                    fig.update_traces(texttemplate='%{text:.2f}', textposition='outside')
-                    fig.update_layout(
-                        xaxis_title="Barangay",
-                        yaxis_title="Flood Probability",
-                        showlegend=False
-                    )
-                    st.plotly_chart(fig, use_container_width=True)
-
-                    # Display most affected barangay
-                    most_affected = brgy.iloc[0]
-                    st.markdown(f"""
-                    ### 🌊 Most Affected Barangay
-                    **Barangay:** {most_affected['Barangay']}  
-                    **Flood Probability:** {most_affected['probability']:.2f}  
-                    """)
-
-                    if show_explanations:
-                        st.markdown("""
-                        **Explanation:**  
-                        This chart shows the likelihood of flooding per barangay.  
-                        Barangays with higher probabilities are more flood-prone,  
-                        guiding LGUs in prioritizing disaster-preparedness strategies.
-                        """)
-        else:
-            st.warning("⚠️ Column 'Barangay' not found in dataset.")
-
+    
 # ------------------------------
 # Clustering Tab (KMeans)
 # ------------------------------
