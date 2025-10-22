@@ -427,7 +427,6 @@ with tabs[1]:
                 This helps identify which municipalities historically experience more flooding,
                 guiding local preparedness and response planning.
                 """)
-    
 # ------------------------------
 # Clustering Tab (KMeans)
 # ------------------------------
