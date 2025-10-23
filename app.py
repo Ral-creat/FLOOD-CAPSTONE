@@ -427,6 +427,30 @@ with tabs[1]:
                 This helps identify which municipalities historically experience more flooding,
                 guiding local preparedness and response planning.
                 """)
+         # ------------------------------
+        # Municipal flood probabilities
+        # ------------------------------
+        if 'Barangay' in df.columns:
+            st.subheader("Flood probability by Barangay")
+            mun = df.groupby('Barangay')['flood_occurred'].agg(['sum','count']).reset_index()
+            mun['probability'] = (mun['sum'] / mun['count']).round(3)
+            mun = mun.sort_values('probability', ascending=False)
+            fig = px.bar(
+                mun,
+                x='Barangay',
+                y='probability',
+                title="Flood Probability by Barangay",
+                text='probability'
+            )
+            fig.update_traces(texttemplate='%{text:.2f}', textposition='outside')
+            fig.update_layout(xaxis_title="Barangay", yaxis_title="Flood Probability")
+            st.plotly_chart(fig, use_container_width=True)
+            if show_explanations:
+                st.markdown("""
+                **Explanation:**  
+                This helps identify which Barangay historically experience more flooding,
+                guiding local preparedness and response planning.
+                """)
 # ------------------------------
 # Clustering Tab (KMeans)
 # ------------------------------
