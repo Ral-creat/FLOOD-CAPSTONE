@@ -307,17 +307,17 @@ with tabs[1]:
     if 'df_raw' not in locals():
         st.warning("Upload a dataset first in the Data Upload tab.")
     else:
-       # existing line
-df = load_and_basic_clean(df_raw)
+     else:
+    df = load_and_basic_clean(df_raw)
+    
+    # 🧩 Apply median imputation for all numeric columns (just to be sure)
+    num_cols = df.select_dtypes(include=[np.number]).columns
+    for col in num_cols:
+        df[col] = df[col].replace(0, np.nan)   # treat zeros as missing if needed
+        df[col] = df[col].fillna(df[col].median())  # fill with median value
 
-# 🧩 Apply median imputation after cleaning
-num_cols = df.select_dtypes(include=[np.number]).columns
-for col in num_cols:
-    df[col] = df[col].replace(0, np.nan)      # treat zeros as missing
-    df[col] = df[col].fillna(df[col].median()) # fill with median value
-
-st.subheader("After basic cleaning (head):")
-st.dataframe(df.head())
+    st.subheader("After basic cleaning (head):")
+    st.dataframe(df.head(10))
 
         # Basic stats
         st.subheader("Summary statistics (numerical):")
