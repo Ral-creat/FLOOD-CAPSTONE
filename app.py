@@ -428,7 +428,7 @@ with tabs[1]:
                 guiding local preparedness and response planning.
                 """)
          # ------------------------------
-        # Municipal flood probabilities
+        # Barangay flood probabilities
         # ------------------------------
         if 'Barangay' in df.columns:
             st.subheader("Flood probability by Barangay")
