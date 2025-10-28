@@ -304,24 +304,41 @@ with tabs[0]:
 # ------------------------------
 with tabs[1]:
     st.header("Data Cleaning & Exploratory Data Analysis (EDA)")
-    
     if 'df_raw' not in locals():
         st.warning("Upload a dataset first in the Data Upload tab.")
     else:
+        # --- Clean dataset ---
         df = load_and_basic_clean(df_raw)
-        
-        # 🧩 Apply median imputation for all numeric columns (just to be sure)
-        num_cols = df.select_dtypes(include=[np.number]).columns
-        for col in num_cols:
-            df[col] = df[col].replace(0, np.nan)   # treat zeros as missing if needed
-            df[col] = df[col].fillna(df[col].median())  # fill with median value
 
-        st.subheader("After basic cleaning (head):")
-        st.dataframe(df.head(10))
+        # 🔍 Show raw vs median-filled data
+        st.subheader("🧾 Raw vs Cleaned Data (Preview)")
+        col1, col2 = st.columns(2)
 
-        # Basic stats
+        with col1:
+            st.markdown("**Raw Data (Original)**")
+            st.dataframe(df_raw.head(10), use_container_width=True)
+
+        # ✅ Fill missing & zero values with median
+        df_median = df.copy()
+        numeric_cols = ['Water Level', 'No. of Families affected', 'Damage Infrastructure', 'Damage Agriculture']
+        for col in numeric_cols:
+            if col in df_median.columns:
+                median_val = df_median[col].replace(0, np.nan).median()
+                df_median[col] = df_median[col].replace(0, np.nan).fillna(median_val)
+
+        with col2:
+            st.markdown("**Median-Filled Data (Processed)**")
+            st.dataframe(df_median.head(10), use_container_width=True)
+
+        st.info("👉 Missing and zero values were replaced with each column’s median.")
+
+        # Replace df with median-filled version for all later analyses
+        df = df_median
+
+        # Continue with your stats & charts below 👇
         st.subheader("Summary statistics (numerical):")
         st.write(df.select_dtypes(include=[np.number]).describe())
+
 
         # Water Level distribution (Plotly)
         if 'Water Level' in df.columns:
