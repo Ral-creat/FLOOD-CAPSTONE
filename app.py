@@ -304,20 +304,20 @@ with tabs[0]:
 # ------------------------------
 with tabs[1]:
     st.header("Data Cleaning & Exploratory Data Analysis (EDA)")
+    
     if 'df_raw' not in locals():
         st.warning("Upload a dataset first in the Data Upload tab.")
     else:
-     else:
-    df = load_and_basic_clean(df_raw)
-    
-    # 🧩 Apply median imputation for all numeric columns (just to be sure)
-    num_cols = df.select_dtypes(include=[np.number]).columns
-    for col in num_cols:
-        df[col] = df[col].replace(0, np.nan)   # treat zeros as missing if needed
-        df[col] = df[col].fillna(df[col].median())  # fill with median value
+        df = load_and_basic_clean(df_raw)
+        
+        # 🧩 Apply median imputation for all numeric columns (just to be sure)
+        num_cols = df.select_dtypes(include=[np.number]).columns
+        for col in num_cols:
+            df[col] = df[col].replace(0, np.nan)   # treat zeros as missing if needed
+            df[col] = df[col].fillna(df[col].median())  # fill with median value
 
-    st.subheader("After basic cleaning (head):")
-    st.dataframe(df.head(10))
+        st.subheader("After basic cleaning (head):")
+        st.dataframe(df.head(10))
 
         # Basic stats
         st.subheader("Summary statistics (numerical):")
@@ -334,6 +334,7 @@ with tabs[1]:
                 title="Distribution of Cleaned Water Level"
             )
             st.plotly_chart(fig, use_container_width=True)
+            
             if show_explanations:
                 st.markdown("""
                 **Explanation:**  
